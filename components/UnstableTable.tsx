@@ -28,7 +28,13 @@ const COLUMNS: { key: SortKey; label: string }[] = [
   { key: "holders", label: "Holders" },
 ];
 
-export default function UnstableTable({ rows }: { rows: TokenRow[] }) {
+export default function UnstableTable({
+  rows,
+  updatedAt,
+}: {
+  rows: TokenRow[];
+  updatedAt: string;
+}) {
   const [sortKey, setSortKey] = useState<SortKey>("marketCap");
   const [asc, setAsc] = useState(false);
 
@@ -107,6 +113,7 @@ export default function UnstableTable({ rows }: { rows: TokenRow[] }) {
                   )}
                 </th>
               ))}
+              <th scope="col" aria-label="Details" />
             </tr>
           </thead>
           <tbody>
@@ -164,15 +171,25 @@ export default function UnstableTable({ rows }: { rows: TokenRow[] }) {
                 </td>
                 <td>{formatDate(t.launchedOn)}</td>
                 <td>{formatNumber(t.holders)}</td>
+                <td>
+                  <a
+                    className="details-link"
+                    href={`/${t.id}`}
+                    title={`${t.name} price, chart and details`}
+                    aria-label={`${t.name} details`}
+                  >
+                    →
+                  </a>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
       <div className="table-footnote">
-        Live market data from DexScreener · holders from Blockscout &amp;
-        Solscan · refreshed every ~5 minutes. Click a column to sort, click a
-        coin to visit its official site.
+        Live data from DexScreener, Blockscout &amp; Solscan · updated{" "}
+        {updatedAt} · refreshes every ~5 min. Click a column to sort, a coin to
+        visit its site, or → for details &amp; chart.
       </div>
     </div>
   );

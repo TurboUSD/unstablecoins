@@ -6,15 +6,19 @@ export interface TokenStatic {
   symbol: string;
   chain: "solana" | "base" | "ethereum" | string;
   chainLabel: string;
+  dexChain: string;
   address: string;
+  pairAddress: string;
   website: string;
   explorer: string;
+  twitter?: string;
   logo: string;
   launchedOn: string; // ISO date
   holdersFallback: number | null;
   supplyFallback: number | null;
   marketCapFallback: number | null;
   priceFallback: number | null;
+  description: string[];
 }
 
 export interface TokenRow extends TokenStatic {
@@ -171,6 +175,16 @@ export async function getTokenRows(): Promise<TokenRow[]> {
   const rows = await Promise.all(TOKENS.map(getTokenRow));
   rows.sort((a, b) => (b.marketCap ?? 0) - (a.marketCap ?? 0));
   return rows;
+}
+
+export function getTokens(): TokenStatic[] {
+  return TOKENS;
+}
+
+export async function getTokenRowById(id: string): Promise<TokenRow | null> {
+  const t = TOKENS.find((x) => x.id === id);
+  if (!t) return null;
+  return getTokenRow(t);
 }
 
 export function totalMarketCap(rows: TokenRow[]): number {

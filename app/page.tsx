@@ -25,7 +25,7 @@ const FAQ: { q: string; a: string[] }[] = [
   {
     q: "Why do unstablecoins exist?",
     a: [
-      "Unstablecoins emerged during the 2025 stablecoin boom as a counter-narrative. As digital dollars became one of crypto's biggest sectors, some communities argued that stablecoins simply reproduce fiat logic onchain: centralized trust and slow monetary debasement dressed up as \"stability\".",
+      "Unstablecoins emerged alongside the stablecoin boom as a counter-narrative — the first one, TurboUSD, deployed in October 2024, and the wave went mainstream in 2025. As digital dollars became one of crypto's biggest sectors, some communities argued that stablecoins simply reproduce fiat logic onchain: centralized trust and slow monetary debasement dressed up as \"stability\".",
       "Unstablecoins respond with satire and alternative monetary design — fixed supplies, deflationary mechanics and no central promise-keeper. Projects like TurboUSD (₸USD) frame this as a live experiment: a finite, openly volatile asset instead of an infinite, quietly inflating one.",
     ],
   },
@@ -56,7 +56,8 @@ const FAQ: { q: string; a: string[] }[] = [
   {
     q: "What was the first unstablecoin?",
     a: [
-      "The unstablecoin wave took shape in 2025. Unstable Coin (USDUC) popularized the concept on Solana in mid-2025, and TurboUSD (₸USD) — which brands itself \"the world's first unstablecoin\" — launched on Base in July 2025 as the first to build a full ecosystem around the idea, combining a fixed-supply token, staking, an AI-run treasury and a real-world brand.",
+      "TurboUSD (₸USD) was the first unstablecoin ever deployed. It originally launched on Base through the Mint.Club launchpad in October 2024 — starting at $1 to simulate a stablecoin, but with room to grow — and later relaunched in its current form as a Clanker token in July 2025.",
+      "The wave went mainstream in 2025: Unstable Coin (USDUC) popularized the concept on Solana in mid-2025, followed by parodies like Unstable Tether (USDUT) and Unstable States Dollar (USD). TurboUSD remains the only one to build a full ecosystem around the idea — fixed supply, staking, an AI-run treasury and a real-world brand.",
     ],
   },
 ];
@@ -65,6 +66,15 @@ export default async function Home() {
   const rows = await getTokenRows();
   const mcap = totalMarketCap(rows);
   const holders = rows.reduce((a, r) => a + (r.holders ?? 0), 0);
+  const updatedAt =
+    new Date().toLocaleString("en-US", {
+      timeZone: "UTC",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }) + " UTC";
 
   const jsonLd = [
     {
@@ -114,11 +124,9 @@ export default async function Home() {
 
       <section className="hero">
         <div className="container">
-          <span className="eyebrow">⚡ The Unstablecoin List</span>
+          <span className="eyebrow">⚡ Embrace the Unstable</span>
           <h1>
-            Top <span className="grad">Unstablecoins</span>
-            <br />
-            by Market Cap
+            The <span className="grad">Unstablecoin</span> List
           </h1>
           <p className="lede">
             An <strong>unstablecoin</strong> is the opposite of a stablecoin: a
@@ -142,7 +150,7 @@ export default async function Home() {
 
       <section className="table-section" id="rankings" aria-label="Unstablecoin rankings">
         <div className="container">
-          <UnstableTable rows={rows} />
+          <UnstableTable rows={rows} updatedAt={updatedAt} />
         </div>
       </section>
 
@@ -151,7 +159,7 @@ export default async function Home() {
           <h2>What is an unstablecoin?</h2>
           <p className="sub">
             Stablecoins promise your token will always be worth $1.
-            Unstablecoins promise nothing — on purpose. Born during the 2025
+            Unstablecoins promise nothing — on purpose. Born alongside the
             stablecoin boom, they reject the illusion of stability sold by
             fiat currencies and pegged tokens, and embrace free-floating value
             instead.
@@ -199,6 +207,28 @@ export default async function Home() {
                 From memes to real-world brands and AI-managed treasuries,
                 unstablecoins turn a joke about money into living onchain
                 experiments.
+              </p>
+            </div>
+            <div className="about-card">
+              <span className="emoji" aria-hidden="true">
+                🏦
+              </span>
+              <h3>No issuer, no redemption desk</h3>
+              <p>
+                Stablecoins depend on a company holding reserves that can be
+                frozen or mismanaged. Unstablecoins have no central issuer —
+                there is nothing to trust and nothing to redeem.
+              </p>
+            </div>
+            <div className="about-card">
+              <span className="emoji" aria-hidden="true">
+                🎢
+              </span>
+              <h3>High risk, zero promises</h3>
+              <p>
+                Unstablecoins are speculative cultural assets that can go to
+                zero — and they say so on the label. Arguably the most honest
+                disclaimer in crypto.
               </p>
             </div>
           </div>

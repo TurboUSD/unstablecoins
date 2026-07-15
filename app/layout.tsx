@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
-import ThemeToggle from "@/components/ThemeToggle";
+import MainNav from "@/components/MainNav";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://unstablecoins.org";
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default:
-      "Unstablecoins — Top Unstablecoins by Market Cap | Prices & Rankings",
+      "Unstablecoins — The Unstablecoin List | Live Prices, Charts & Rankings",
     template: "%s | Unstablecoins",
   },
   description:
@@ -33,14 +34,14 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     siteName: "Unstablecoins",
-    title: "Unstablecoins — Top Unstablecoins by Market Cap",
+    title: "Unstablecoins — The Unstablecoin List",
     description:
-      "The unstablecoin list. Live prices, market caps, supply and holders of every unstablecoin. Embrace the volatility.",
+      "Live prices, market caps, charts and rankings of every unstablecoin. Embrace the volatility.",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Unstablecoins — Top Unstablecoins by Market Cap",
+    title: "Unstablecoins — The Unstablecoin List",
     description:
       "The unstablecoin list. Live prices, market caps, supply and holders of every unstablecoin.",
   },
@@ -85,20 +86,10 @@ export default function RootLayout({
         <header className="site-header">
           <div className="container inner">
             <a href="/" className="brand" aria-label="Unstablecoins home">
-              <span className="bolt" aria-hidden="true">
-                ⚡
-              </span>
-              unstablecoins<span style={{ color: "var(--text-3)" }}>.org</span>
+              <span className="wordmark">unstablecoins</span>
+              <span className="tld">.org</span>
             </a>
-            <nav className="header-actions" aria-label="Main">
-              <a href="/#rankings" className="nav-link">
-                Rankings
-              </a>
-              <a href="/#faq" className="nav-link">
-                FAQ
-              </a>
-              <ThemeToggle />
-            </nav>
+            <MainNav />
           </div>
         </header>
         {children}
@@ -119,8 +110,12 @@ export default function RootLayout({
               </div>
               <div className="footer-links">
                 <a href="/#rankings">Rankings</a>
-                <a href="/#what-is-an-unstablecoin">What is an unstablecoin?</a>
+                <a href="/learn/what-is-an-unstablecoin">
+                  What is an unstablecoin?
+                </a>
+                <a href="/learn">Learn</a>
                 <a href="/#faq">FAQ</a>
+                <a href="/submit">Submit a coin</a>
                 <a
                   href="https://turbousd.com"
                   target="_blank"
@@ -148,6 +143,7 @@ export default function RootLayout({
             </p>
           </div>
         </footer>
+        <Analytics />
       </body>
     </html>
   );
