@@ -695,6 +695,25 @@ table.coins tbody tr:last-child td {
   .footer-right {
     align-items: flex-start;
   }
+
+  .site-footer {
+    font-size: 0.62rem;
+  }
+
+  .footer-brand,
+  .footer-brand a {
+    white-space: nowrap;
+  }
+
+  .footer-links {
+    gap: 10px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+
+  .disclaimer {
+    font-size: 0.62rem;
+  }
 }
 
 .disclaimer {
