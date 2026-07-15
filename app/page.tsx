@@ -1,5 +1,10 @@
 import UnstableTable from "@/components/UnstableTable";
-import { getTokenRows, totalMarketCap } from "@/lib/market";
+import VersusChart from "@/components/VersusChart";
+import {
+  getTokenRows,
+  totalMarketCap,
+  getStablecoinBreakdown,
+} from "@/lib/market";
 import { formatUsd, formatNumber } from "@/lib/format";
 
 export const revalidate = 300;
@@ -63,8 +68,19 @@ const FAQ: { q: string; a: string[] }[] = [
 ];
 
 export default async function Home() {
-  const rows = await getTokenRows();
+  const [rows, stables] = await Promise.all([
+    getTokenRows(),
+    getStablecoinBreakdown(),
+  ]);
   const mcap = totalMarketCap(rows);
+  const stableMcap = stables?.total ?? null;
+  const sharePct =
+    stableMcap && mcap ? (mcap / stableMcap) * 100 : null;
+  const growthX =
+    stableMcap && mcap ? Math.round(stableMcap / mcap) : null;
+  const unstableSegments = rows
+    .filter((r) => (r.marketCap ?? 0) > 0)
+    .map((r) => ({ label: r.symbol, value: r.marketCap as number }));
   const holders = rows.reduce((a, r) => a + (r.holders ?? 0), 0);
   const updatedAt =
     new Date().toLocaleString("en-US", {
@@ -124,7 +140,7 @@ export default async function Home() {
 
       <section className="hero">
         <div className="container">
-          <span className="eyebrow">⚡ Embrace the Unstable</span>
+          <span className="eyebrow">Embrace the Unstable ⚡</span>
           <h1>
             The <span className="grad">Unstablecoin</span> List
           </h1>
@@ -153,6 +169,50 @@ export default async function Home() {
           <UnstableTable rows={rows} updatedAt={updatedAt} />
         </div>
       </section>
+
+      {stables && stableMcap && sharePct !== null && growthX !== null && (
+        <section className="section" id="unstablecoins-vs-stablecoins">
+          <div className="container">
+            <h2>Unstablecoins vs Stablecoins</h2>
+            <p className="sub">
+              Stablecoins are one of crypto&apos;s biggest markets.
+              Unstablecoins are its most honest counter-bet. Here is the
+              matchup so far.
+            </p>
+            <div className="versus-card">
+              <div className="vs-side unstable">
+                <div className="vs-label">Unstablecoins</div>
+                <div className="vs-value">{formatUsd(mcap)}</div>
+                <div className="vs-note">
+                  {rows.length} coins · no peg, no promises
+                </div>
+              </div>
+              <div className="vs-badge" aria-hidden="true">
+                VS
+              </div>
+              <div className="vs-side stable">
+                <div className="vs-label">Stablecoins</div>
+                <div className="vs-value">{formatUsd(stableMcap)}</div>
+                <div className="vs-note">
+                  every USD-pegged token · data via DefiLlama
+                </div>
+              </div>
+            </div>
+            <VersusChart
+              unstable={unstableSegments}
+              unstableTotal={mcap}
+              stable={stables.items}
+              stableTotal={stableMcap}
+            />
+            <p className="vs-caption">
+              Unstablecoins currently sit at{" "}
+              <strong>{sharePct.toFixed(4)}%</strong> of the stablecoin market
+              cap. Only <strong>{growthX.toLocaleString("en-US")}×</strong> to
+              go until the flippening. Early.
+            </p>
+          </div>
+        </section>
+      )}
 
       <section className="section" id="what-is-an-unstablecoin">
         <div className="container">

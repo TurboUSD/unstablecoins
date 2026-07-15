@@ -190,3 +190,43 @@ export async function getTokenRowById(id: string): Promise<TokenRow | null> {
 export function totalMarketCap(rows: TokenRow[]): number {
   return rows.reduce((acc, r) => acc + (r.marketCap ?? 0), 0);
 }
+
+export interface StableItem {
+  label: string;
+  value: number;
+}
+
+export interface StablecoinBreakdown {
+  total: number;
+  items: StableItem[]; // top coins + "Others"
+}
+
+/**
+ * USD-pegged stablecoin market caps from DefiLlama (cached 1h):
+ * total + top coins breakdown for the comparison chart.
+ */
+export async function getStablecoinBreakdown(): Promise<StablecoinBreakdown | null> {
+  const j = await fetchJson(
+    "https://stablecoins.llama.fi/stablecoins?includePrices=false",
+    3600
+  );
+  if (!Array.isArray(j?.peggedAssets)) return null;
+
+  const usd = j.peggedAssets
+    .filter((a: any) => a?.pegType === "peggedUSD")
+    .map((a: any) => ({
+      label: (a?.symbol || a?.name || "?") as string,
+      value: (a?.circulating?.peggedUSD ?? 0) as number,
+    }))
+    .filter((a: StableItem) => a.value > 0)
+    .sort((a: StableItem, b: StableItem) => b.value - a.value);
+
+  if (!usd.length) return null;
+
+  const total = usd.reduce((acc: number, a: StableItem) => acc + a.value, 0);
+  const top = usd.slice(0, 5);
+  const others = total - top.reduce((acc: number, a: StableItem) => acc + a.value, 0);
+  const items = others > 0 ? [...top, { label: "Others", value: others }] : top;
+
+  return { total, items };
+}

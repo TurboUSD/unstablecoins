@@ -188,8 +188,7 @@ export default function UnstableTable({
       </div>
       <div className="table-footnote">
         Live data from DexScreener, Blockscout &amp; Solscan · updated{" "}
-        {updatedAt} · refreshes every ~5 min. Click a column to sort, a coin to
-        visit its site, or → for details &amp; chart.
+        {updatedAt} · refreshes every ~5 min.
       </div>
     </div>
   );
