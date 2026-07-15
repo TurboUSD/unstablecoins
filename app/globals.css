@@ -60,6 +60,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
@@ -831,6 +832,7 @@ table.coins tbody tr:last-child td {
 }
 
 .seg-tip {
+  display: none;
   position: absolute;
   bottom: calc(100% + 8px);
   left: 50%;
@@ -842,9 +844,7 @@ table.coins tbody tr:last-child td {
   font-weight: 500;
   padding: 6px 10px;
   border-radius: 8px;
-  opacity: 0;
   pointer-events: none;
-  transition: opacity 0.12s ease;
   z-index: 20;
   font-variant-numeric: tabular-nums;
 }
@@ -870,7 +870,22 @@ table.coins tbody tr:last-child td {
 }
 
 .stack-bar .seg:hover .seg-tip {
-  opacity: 1;
+  display: block;
+}
+
+/* keep the last segments' tooltips inside the container */
+.stack-bar .seg:last-child .seg-tip,
+.stack-bar .seg:nth-last-child(2) .seg-tip {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+
+.stack-bar .seg:last-child .seg-tip::after,
+.stack-bar .seg:nth-last-child(2) .seg-tip::after {
+  left: auto;
+  right: 12px;
+  transform: none;
 }
 
 .pies-wrap {
@@ -1356,6 +1371,105 @@ table.coins .details-link:hover {
   background: var(--accent-soft);
 }
 
+/* Mobile table: all columns stay visible, horizontal scroll with
+   sticky rank + name columns (CoinMarketCap style). */
+@media (max-width: 760px) {
+  .table-scroll {
+    scrollbar-width: thin;
+    /* scroll shadow hint on the right edge */
+    background:
+      linear-gradient(to left, var(--surface) 30%, transparent) 100% 0,
+      radial-gradient(
+          farthest-side at 100% 50%,
+          rgba(0, 0, 0, 0.22),
+          transparent
+        )
+        100% 0;
+    background-repeat: no-repeat;
+    background-size:
+      40px 100%,
+      14px 100%;
+    background-attachment: local, scroll;
+  }
+
+  .table-scroll::-webkit-scrollbar {
+    display: block;
+    height: 4px;
+  }
+
+  .table-scroll::-webkit-scrollbar-thumb {
+    background: var(--border-2);
+    border-radius: 2px;
+  }
+
+  table.coins {
+    min-width: 860px;
+  }
+
+  table.coins th:first-child,
+  table.coins td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    background: var(--surface);
+    width: 40px;
+  }
+
+  table.coins th:nth-child(2),
+  table.coins td:nth-child(2) {
+    position: sticky;
+    left: 40px;
+    z-index: 3;
+    background: var(--surface);
+    width: 172px;
+    min-width: 172px;
+    max-width: 172px;
+    white-space: normal;
+  }
+
+  /* header cells keep header background and stay above */
+  table.coins thead th:first-child,
+  table.coins thead th:nth-child(2) {
+    background: var(--surface-2);
+    z-index: 4;
+  }
+
+  /* subtle divider on the edge of the sticky name column */
+  table.coins td:nth-child(2)::after,
+  table.coins th:nth-child(2)::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+
+  table.coins tbody tr:hover td:first-child,
+  table.coins tbody tr:hover td:nth-child(2) {
+    background: var(--row-hover);
+  }
+
+  .coin-cell {
+    gap: 8px;
+  }
+
+  .coin-cell img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .coin-cell .name {
+    font-size: 0.88rem;
+    line-height: 1.25;
+  }
+
+  .chain-badge {
+    display: none;
+  }
+}
+
 @media (max-width: 640px) {
   .hero {
     padding: 34px 0 22px;
@@ -1397,7 +1511,7 @@ table.coins .details-link:hover {
   }
   table.coins td,
   table.coins th {
-    padding: 12px 10px;
+    padding: 12px 8px;
   }
   .chart-embed {
     height: 380px;
