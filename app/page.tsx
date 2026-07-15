@@ -80,7 +80,11 @@ export default async function Home() {
     stableMcap && mcap ? Math.round(stableMcap / mcap) : null;
   const unstableSegments = rows
     .filter((r) => (r.marketCap ?? 0) > 0)
-    .map((r) => ({ label: r.symbol, value: r.marketCap as number }));
+    .map((r) => ({
+      label: r.symbol,
+      value: r.marketCap as number,
+      color: r.color,
+    }));
   const holders = rows.reduce((a, r) => a + (r.holders ?? 0), 0);
   const updatedAt =
     new Date().toLocaleString("en-US", {

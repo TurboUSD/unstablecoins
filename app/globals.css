@@ -28,7 +28,7 @@
   --shadow: 0 1px 2px rgba(16, 20, 28, 0.05), 0 8px 24px rgba(16, 20, 28, 0.06);
   --hero-glow-1: rgba(255, 153, 0, 0.14);
   --hero-glow-2: rgba(124, 58, 237, 0.1);
-  --turbo: #04ca6a;
+  --turbo: #43e397;
 }
 
 :root[data-theme="dark"] {
@@ -51,7 +51,7 @@
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.35);
   --hero-glow-1: rgba(255, 176, 32, 0.09);
   --hero-glow-2: rgba(167, 139, 250, 0.08);
-  --turbo: #04ca6a;
+  --turbo: #43e397;
 }
 
 * {
@@ -71,6 +71,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   transition: background-color 0.25s ease, color 0.25s ease;
+  overflow-x: clip;
 }
 
 a {
@@ -279,10 +280,11 @@ a {
 
 .hero h1 {
   margin: 0 0 16px;
-  font-size: clamp(2.4rem, 6vw, 4rem);
+  font-size: clamp(2rem, 6vw, 4rem);
   font-weight: 900;
   letter-spacing: -0.035em;
   line-height: 1.05;
+  white-space: nowrap;
 }
 
 .hero h1 .grad {
@@ -767,6 +769,19 @@ table.coins tbody tr:last-child td {
   margin: 26px 0 8px;
 }
 
+.chart-sub {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  margin: 34px 0 4px;
+}
+
+.chart-sub:first-child {
+  margin-top: 0;
+}
+
 .stack-bars {
   display: flex;
   flex-direction: column;
@@ -881,10 +896,90 @@ table.coins tbody tr:last-child td {
 }
 
 .pie-area {
+  position: relative;
   height: min(300px, 64vw);
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.unstable-area {
+  cursor: pointer;
+  min-width: 200px;
+  border-radius: var(--radius);
+}
+
+.unstable-area:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.pie {
+  transition: width 0.35s ease;
+}
+
+.dot-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: dot-pulse 2s ease-out infinite;
+}
+
+@keyframes dot-pulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.9;
+  }
+  70% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.true-callout {
+  position: absolute;
+  bottom: calc(50% + 16px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: max-content;
+  max-width: 230px;
+  text-align: center;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.callout-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  border-radius: 10px;
+  padding: 9px 13px;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--text-2);
+  white-space: normal;
+}
+
+.callout-box strong {
+  color: var(--text);
+}
+
+.callout-line {
+  width: 2px;
+  height: 30px;
+  background: var(--text-3);
 }
 
 .pie path {
@@ -1277,7 +1372,7 @@ table.coins .details-link:hover {
     margin-bottom: 14px;
   }
   .hero h1 {
-    font-size: 2rem;
+    font-size: clamp(1.4rem, 6.8vw, 2rem);
     margin-bottom: 10px;
   }
   .hero .lede {
@@ -1285,13 +1380,26 @@ table.coins .details-link:hover {
     line-height: 1.5;
   }
   .hero .stats {
-    margin-top: 18px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
+    margin-top: 18px;
   }
   .stat-chip {
-    padding: 6px 12px;
-    font-size: 0.78rem;
-    border-radius: 9px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 9px 6px;
+    font-size: 0.66rem;
+    line-height: 1.3;
+    text-align: center;
+    border-radius: 10px;
+  }
+  .stat-chip strong {
+    margin-left: 0;
+    font-size: 0.95rem;
   }
   table.coins td,
   table.coins th {

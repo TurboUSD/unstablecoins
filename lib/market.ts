@@ -14,6 +14,7 @@ export interface TokenStatic {
   twitter?: string;
   telegram?: string;
   logo: string;
+  color: string;
   launchedOn: string; // ISO date
   holdersFallback: number | null;
   supplyFallback: number | null;

@@ -6,18 +6,29 @@ import { formatUsd } from "@/lib/format";
 export interface Segment {
   label: string;
   value: number;
+  color?: string;
 }
 
-const STABLE_COLORS = [
-  "#26a17b", // USDT green
-  "#2775ca", // USDC blue
-  "#f5ac37", // amber
-  "#5b8def",
-  "#48c9a9",
-  "#8a93a6", // others
-];
+// Official brand colors for well-known stablecoins
+const STABLE_COLOR_MAP: Record<string, string> = {
+  USDT: "#26a17b",
+  USDC: "#2775ca",
+  DAI: "#f4b731",
+  USDS: "#f5ac37",
+  USDE: "#48c9a9",
+  USD1: "#5b8def",
+  Others: "#8a93a6",
+};
 
-const UNSTABLE_COLORS = ["#ff9900", "#7c3aed", "#e5484d", "#04ca6a", "#ffb020"];
+const FALLBACK_COLORS = ["#5b8def", "#48c9a9", "#f5ac37", "#9aa4b8"];
+
+function segColor(s: Segment, i: number): string {
+  return (
+    s.color ??
+    STABLE_COLOR_MAP[s.label] ??
+    FALLBACK_COLORS[i % FALLBACK_COLORS.length]
+  );
+}
 
 function pctLabel(pct: number): string {
   if (pct >= 10) return `${pct.toFixed(1)}%`;
@@ -31,12 +42,10 @@ function StackBar({
   title,
   total,
   segments,
-  colors,
 }: {
   title: string;
   total: number;
   segments: Segment[];
-  colors: string[];
 }) {
   return (
     <div className="stack-block">
@@ -51,10 +60,7 @@ function StackBar({
             <span
               key={s.label}
               className="seg"
-              style={{
-                flexGrow: s.value,
-                background: colors[i % colors.length],
-              }}
+              style={{ flexGrow: s.value, background: segColor(s, i) }}
             >
               <span className="seg-tip">
                 <strong>{s.label}</strong> · {formatUsd(s.value)} ·{" "}
@@ -69,7 +75,7 @@ function StackBar({
           <span key={s.label} className="legend-item">
             <span
               className="legend-dot"
-              style={{ background: colors[i % colors.length] }}
+              style={{ background: segColor(s, i) }}
               aria-hidden="true"
             />
             {s.label}{" "}
@@ -107,7 +113,6 @@ type TipHandler = (e: React.MouseEvent | null, text?: string) => void;
 
 function Pie({
   segments,
-  colors,
   size,
   cssSize,
   total,
@@ -115,7 +120,6 @@ function Pie({
   onTip,
 }: {
   segments: Segment[];
-  colors: string[];
   size: number;
   cssSize: string;
   total: number;
@@ -143,7 +147,7 @@ function Pie({
           <path
             key={s.label}
             d={slicePath(r, r, r - 1, a0, a1)}
-            fill={colors[i % colors.length]}
+            fill={segColor(s, i)}
             stroke="var(--surface)"
             strokeWidth={size / 150}
             onMouseMove={(e) => onTip(e, tipText)}
@@ -156,6 +160,11 @@ function Pie({
     </svg>
   );
 }
+
+/* ---------- Main ---------- */
+
+const STABLE_PIE_PX = 300;
+const ZOOMED_PX = 96;
 
 export default function VersusChart({
   unstable,
@@ -172,9 +181,15 @@ export default function VersusChart({
   const [tip, setTip] = useState<{ x: number; y: number; text: string } | null>(
     null
   );
+  const [zoomed, setZoomed] = useState(false);
 
   const sharePct = (unstableTotal / stableTotal) * 100;
   const growthX = Math.round(stableTotal / unstableTotal);
+
+  // True scale: circle areas proportional to market caps
+  const truePxRaw = STABLE_PIE_PX * Math.sqrt(unstableTotal / stableTotal);
+  const truePx = Math.max(truePxRaw, 4); // keep it findable on screen
+  const magnification = Math.max(2, Math.round(ZOOMED_PX / truePxRaw));
 
   const onTip: TipHandler = (e, text) => {
     if (!e || !text) {
@@ -188,21 +203,7 @@ export default function VersusChart({
 
   return (
     <div className="versus-chart">
-      <div className="stack-bars">
-        <StackBar
-          title="Unstablecoins"
-          total={unstableTotal}
-          segments={unstable}
-          colors={UNSTABLE_COLORS}
-        />
-        <StackBar
-          title="Stablecoins"
-          total={stableTotal}
-          segments={stable}
-          colors={STABLE_COLORS}
-        />
-      </div>
-
+      <h3 className="chart-sub">Relative Size</h3>
       <div className="pies-wrap" ref={ref}>
         {tip && (
           <div
@@ -215,12 +216,38 @@ export default function VersusChart({
         )}
         <div className="pies">
           <div className="pie-col">
-            <div className="pie-area">
+            <div
+              className="pie-area unstable-area"
+              onClick={() => setZoomed(!zoomed)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setZoomed(!zoomed);
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              aria-pressed={zoomed}
+              aria-label={
+                zoomed
+                  ? "Shrink unstablecoin circle back to true scale"
+                  : "Magnify unstablecoin circle"
+              }
+            >
+              {!zoomed && (
+                <div className="true-callout" aria-hidden="true">
+                  <div className="callout-box">
+                    This is the <strong>entire unstablecoin market</strong> at
+                    true scale. Click to magnify ⚡
+                  </div>
+                  <div className="callout-line" />
+                </div>
+              )}
+              {!zoomed && <span className="dot-ring" aria-hidden="true" />}
               <Pie
                 segments={unstable}
-                colors={UNSTABLE_COLORS}
                 size={100}
-                cssSize="min(84px, 18vw)"
+                cssSize={zoomed ? `min(${ZOOMED_PX}px, 20vw)` : `${truePx}px`}
                 total={unstableTotal}
                 label="Unstablecoins"
                 onTip={onTip}
@@ -229,15 +256,14 @@ export default function VersusChart({
             <div className="pie-label">
               <strong>Unstablecoins</strong>
               <span>{formatUsd(unstableTotal)}</span>
-              <em>just {pctLabel(sharePct)} the size of stablecoins*</em>
+              <em>just {pctLabel(sharePct)} the size of stablecoins</em>
             </div>
           </div>
           <div className="pie-col">
             <div className="pie-area">
               <Pie
                 segments={stable}
-                colors={STABLE_COLORS}
-                size={300}
+                size={STABLE_PIE_PX}
                 cssSize="min(300px, 64vw)"
                 total={stableTotal}
                 label="Stablecoins"
@@ -252,9 +278,20 @@ export default function VersusChart({
           </div>
         </div>
         <p className="pie-scale-note">
-          *Not to scale — at true scale, the unstablecoin circle would be
-          smaller than a single pixel.
+          {zoomed
+            ? `Unstablecoin circle magnified ~${magnification.toLocaleString("en-US")}× for visibility — click it to return to true scale.`
+            : "Circle areas are proportional to real market caps. Yes, the dot is the whole unstablecoin market."}
         </p>
+      </div>
+
+      <h3 className="chart-sub">Asset Composition</h3>
+      <div className="stack-bars">
+        <StackBar
+          title="Unstablecoins"
+          total={unstableTotal}
+          segments={unstable}
+        />
+        <StackBar title="Stablecoins" total={stableTotal} segments={stable} />
       </div>
     </div>
   );
