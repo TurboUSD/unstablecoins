@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default:
-      "Unstablecoins — The Unstablecoin List | Live Prices, Charts & Rankings",
+      "Unstablecoins — The Unstablecoin Screener | Live Prices, Charts & Rankings",
     template: "%s | Unstablecoins",
   },
   description:
@@ -34,14 +34,14 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     siteName: "Unstablecoins",
-    title: "Unstablecoins — The Unstablecoin List",
+    title: "Unstablecoins — The Unstablecoin Screener",
     description:
       "Live prices, market caps, charts and rankings of every unstablecoin. Embrace the volatility.",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Unstablecoins — The Unstablecoin List",
+    title: "Unstablecoins — The Unstablecoin Screener",
     description:
       "The unstablecoin list. Live prices, market caps, supply and holders of every unstablecoin.",
   },

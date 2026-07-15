@@ -27,6 +27,21 @@ export function formatNumber(n: number | null): string {
   return n.toLocaleString("en-US", { maximumFractionDigits: 0 });
 }
 
+export function formatFullDate(iso: string): string {
+  const d = new Date(iso + "T00:00:00Z");
+  return d.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+export function daysSince(iso: string): number {
+  const d = new Date(iso + "T00:00:00Z").getTime();
+  return Math.max(0, Math.floor((Date.now() - d) / 86400000));
+}
+
 export function formatDate(iso: string): string {
   const d = new Date(iso + "T00:00:00Z");
   return d.toLocaleDateString("en-US", {

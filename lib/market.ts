@@ -12,6 +12,7 @@ export interface TokenStatic {
   website: string;
   explorer: string;
   twitter?: string;
+  telegram?: string;
   logo: string;
   launchedOn: string; // ISO date
   holdersFallback: number | null;

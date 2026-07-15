@@ -97,7 +97,7 @@ export default async function Home() {
       "@context": "https://schema.org",
       "@type": "WebSite",
       name: "Unstablecoins",
-      alternateName: "The Unstablecoin List",
+      alternateName: "The Unstablecoin Screener",
       url: SITE_URL,
       description:
         "Live prices, market caps and rankings of every unstablecoin.",
@@ -142,7 +142,7 @@ export default async function Home() {
         <div className="container">
           <span className="eyebrow">Embrace the Unstable ⚡</span>
           <h1>
-            The <span className="grad">Unstablecoin</span> List
+            The <span className="grad">Unstablecoin</span> Screener
           </h1>
           <p className="lede">
             An <strong>unstablecoin</strong> is the opposite of a stablecoin: a
@@ -205,10 +205,8 @@ export default async function Home() {
               stableTotal={stableMcap}
             />
             <p className="vs-caption">
-              Unstablecoins currently sit at{" "}
-              <strong>{sharePct.toFixed(4)}%</strong> of the stablecoin market
-              cap. Only <strong>{growthX.toLocaleString("en-US")}×</strong> to
-              go until the flippening. Early.
+              Only <strong>{growthX.toLocaleString("en-US")}×</strong> to go
+              until the flippening. Early.
             </p>
           </div>
         </section>

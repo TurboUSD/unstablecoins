@@ -764,10 +764,13 @@ table.coins tbody tr:last-child td {
 }
 
 .versus-chart {
+  margin: 26px 0 8px;
+}
+
+.stack-bars {
   display: flex;
   flex-direction: column;
   gap: 26px;
-  margin: 26px 0 16px;
 }
 
 .stack-head {
@@ -806,10 +809,6 @@ table.coins tbody tr:last-child td {
 
 .stack-bar .seg:last-child {
   border-radius: 0 10px 10px 0;
-}
-
-.stack-bar .seg:only-child {
-  border-radius: 10px;
 }
 
 .stack-bar .seg:hover {
@@ -857,6 +856,94 @@ table.coins tbody tr:last-child td {
 
 .stack-bar .seg:hover .seg-tip {
   opacity: 1;
+}
+
+.pies-wrap {
+  position: relative;
+  margin: 40px 0 8px;
+}
+
+.pies {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(36px, 9vw, 110px);
+  flex-wrap: wrap;
+}
+
+.pie-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  max-width: 340px;
+}
+
+.pie-area {
+  height: min(300px, 64vw);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pie path {
+  cursor: default;
+  transition: opacity 0.12s ease;
+}
+
+.pie path:hover {
+  opacity: 0.82;
+}
+
+.pie-tip {
+  position: absolute;
+  white-space: nowrap;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 30;
+  font-variant-numeric: tabular-nums;
+}
+
+.pie-label {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.4;
+}
+
+.pie-label strong {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.pie-label span {
+  font-size: 1.25rem;
+  font-weight: 850;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.pie-label em {
+  font-style: normal;
+  font-size: 0.82rem;
+  color: var(--text-2);
+}
+
+.pie-legend {
+  justify-content: center;
+}
+
+.pie-scale-note {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-3);
+  margin: 18px 0 0;
 }
 
 .stack-legend {
@@ -954,7 +1041,22 @@ table.coins tbody tr:last-child td {
   display: flex;
   align-items: baseline;
   gap: 14px;
-  padding: 6px 0 18px;
+  padding: 6px 0 12px;
+}
+
+.launch-line {
+  display: inline-block;
+  margin: 0 0 18px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  color: var(--text-2);
+  font-size: 0.88rem;
+}
+
+.launch-line strong {
+  color: var(--text);
 }
 
 .coin-price .big {
@@ -1167,7 +1269,29 @@ table.coins .details-link:hover {
 
 @media (max-width: 640px) {
   .hero {
-    padding: 48px 0 30px;
+    padding: 34px 0 22px;
+  }
+  .hero .eyebrow {
+    font-size: 0.7rem;
+    padding: 5px 12px;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  .hero .lede {
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  .hero .stats {
+    margin-top: 18px;
+    gap: 8px;
+  }
+  .stat-chip {
+    padding: 6px 12px;
+    font-size: 0.78rem;
+    border-radius: 9px;
   }
   table.coins td,
   table.coins th {
@@ -1175,5 +1299,11 @@ table.coins .details-link:hover {
   }
   .chart-embed {
     height: 380px;
+  }
+  .pie-area {
+    height: min(220px, 58vw);
+  }
+  .pies .pie-col:last-child .pie {
+    width: min(220px, 58vw) !important;
   }
 }

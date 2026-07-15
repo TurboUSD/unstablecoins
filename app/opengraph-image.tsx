@@ -32,7 +32,7 @@ export default async function OgImage() {
             marginBottom: 28,
           }}
         >
-          ⚡ THE UNSTABLECOIN LIST
+          THE UNSTABLECOIN SCREENER ⚡
         </div>
         <div
           style={{

@@ -113,7 +113,6 @@ export default function UnstableTable({
                   )}
                 </th>
               ))}
-              <th scope="col" aria-label="Details" />
             </tr>
           </thead>
           <tbody>
@@ -123,10 +122,8 @@ export default function UnstableTable({
                 <td>
                   <a
                     className="coin-link"
-                    href={t.website}
-                    target="_blank"
-                    rel="noopener"
-                    title={`${t.name} official website`}
+                    href={`/${t.id}`}
+                    title={`${t.name} (${t.symbol}) price, chart and details`}
                   >
                     <span className="coin-cell">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -171,16 +168,6 @@ export default function UnstableTable({
                 </td>
                 <td>{formatDate(t.launchedOn)}</td>
                 <td>{formatNumber(t.holders)}</td>
-                <td>
-                  <a
-                    className="details-link"
-                    href={`/${t.id}`}
-                    title={`${t.name} price, chart and details`}
-                    aria-label={`${t.name} details`}
-                  >
-                    →
-                  </a>
-                </td>
               </tr>
             ))}
           </tbody>
