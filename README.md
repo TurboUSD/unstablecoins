@@ -11,9 +11,13 @@ Next.js (App Router) + TypeScript, no UI libraries. Server-rendered with ISR (da
 - **Price / market cap / 24h change**: [DexScreener API](https://docs.dexscreener.com) (no key required). Deepest-liquidity pair per token.
 - **Holders (Base/Ethereum)**: Blockscout public API (no key required).
 - **Holders (Solana)**: Solscan public endpoint; uses `SOLSCAN_API_KEY` (Solscan Pro) if set. Falls back to static values in `data/tokens.json`.
-- **Supply**: computed as market cap / price, with static fallback.
+- **Supply**: computed as market cap / price. If DexScreener is unavailable, EVM tokens fall back to reading `totalSupply()` onchain via `BASE_RPC_URL` / `ETH_RPC_URL` (optional env vars).
 
 If every API fails, the site still renders using the fallback values in `data/tokens.json`.
+
+### Caching / rate limits
+
+All upstream calls go through the Next.js data cache: prices revalidate every 5 minutes and holder counts every hour, shared across all visitors. Site traffic never multiplies API calls — worst case is ~4 requests to DexScreener per 5 minutes, far below its public limits.
 
 ## Adding or editing a coin
 

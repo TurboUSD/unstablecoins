@@ -64,6 +64,43 @@ function bestPair(data: any, address: string): any | null {
   return mine[0];
 }
 
+const RPC_URLS: Record<string, string | undefined> = {
+  base: process.env.BASE_RPC_URL,
+  ethereum: process.env.ETH_RPC_URL,
+};
+
+/**
+ * Onchain fallback: ERC-20 totalSupply() via JSON-RPC (assumes 18 decimals
+ * unless the token entry specifies otherwise). Only called when DexScreener
+ * has no data for an EVM token.
+ */
+async function rpcTotalSupply(t: TokenStatic): Promise<number | null> {
+  const rpc = RPC_URLS[t.chain];
+  if (!rpc) return null;
+  try {
+    const res = await fetch(rpc, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        id: 1,
+        method: "eth_call",
+        params: [{ to: t.address, data: "0x18160ddd" }, "latest"],
+      }),
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const j = await res.json();
+    if (typeof j?.result !== "string" || !j.result.startsWith("0x"))
+      return null;
+    const decimals = BigInt((t as any).decimals ?? 18);
+    const raw = BigInt(j.result);
+    return Number(raw / 10n ** decimals);
+  } catch {
+    return null;
+  }
+}
+
 async function getHolders(t: TokenStatic): Promise<number | null> {
   if (t.chain === "base" || t.chain === "ethereum") {
     const host =
@@ -110,8 +147,12 @@ async function getTokenRow(t: TokenStatic): Promise<TokenRow> {
   const price = pair?.priceUsd ? parseFloat(pair.priceUsd) : t.priceFallback;
   const marketCap =
     pair?.marketCap ?? pair?.fdv ?? t.marketCapFallback ?? null;
-  const supply =
-    marketCap && price ? Math.round(marketCap / price) : t.supplyFallback;
+  let supply =
+    marketCap && price ? Math.round(marketCap / price) : null;
+  if (supply === null) {
+    // DexScreener unavailable: try reading totalSupply onchain (EVM only)
+    supply = (await rpcTotalSupply(t)) ?? t.supplyFallback ?? null;
+  }
 
   return {
     ...t,
