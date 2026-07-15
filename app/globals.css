@@ -1375,7 +1375,6 @@ table.coins .details-link:hover {
    sticky rank + name columns (CoinMarketCap style). */
 @media (max-width: 760px) {
   .table-scroll {
-    scrollbar-width: thin;
     /* scroll shadow hint on the right edge */
     background:
       linear-gradient(to left, var(--surface) 30%, transparent) 100% 0,
@@ -1392,18 +1391,18 @@ table.coins .details-link:hover {
     background-attachment: local, scroll;
   }
 
-  .table-scroll::-webkit-scrollbar {
-    display: block;
-    height: 4px;
-  }
-
-  .table-scroll::-webkit-scrollbar-thumb {
-    background: var(--border-2);
-    border-radius: 2px;
-  }
-
   table.coins {
-    min-width: 860px;
+    min-width: 700px;
+    font-size: 0.78rem;
+  }
+
+  table.coins th {
+    font-size: 0.62rem;
+    padding: 10px 8px;
+  }
+
+  table.coins td {
+    padding: 10px 8px;
   }
 
   table.coins th:first-child,
@@ -1412,18 +1411,18 @@ table.coins .details-link:hover {
     left: 0;
     z-index: 3;
     background: var(--surface);
-    width: 40px;
+    width: 30px;
   }
 
   table.coins th:nth-child(2),
   table.coins td:nth-child(2) {
     position: sticky;
-    left: 40px;
+    left: 30px;
     z-index: 3;
     background: var(--surface);
-    width: 172px;
-    min-width: 172px;
-    max-width: 172px;
+    width: 128px;
+    min-width: 128px;
+    max-width: 128px;
     white-space: normal;
   }
 
@@ -1452,21 +1451,30 @@ table.coins .details-link:hover {
   }
 
   .coin-cell {
-    gap: 8px;
+    gap: 7px;
   }
 
   .coin-cell img {
-    width: 26px;
-    height: 26px;
+    width: 22px;
+    height: 22px;
   }
 
   .coin-cell .name {
-    font-size: 0.88rem;
+    font-size: 0.78rem;
     line-height: 1.25;
+  }
+
+  .coin-cell .symbol {
+    font-size: 0.7rem;
   }
 
   .chain-badge {
     display: none;
+  }
+
+  .table-footnote {
+    font-size: 0.7rem;
+    padding: 10px 14px;
   }
 }
 
@@ -1508,10 +1516,6 @@ table.coins .details-link:hover {
   .stat-chip strong {
     margin-left: 0;
     font-size: 0.95rem;
-  }
-  table.coins td,
-  table.coins th {
-    padding: 12px 8px;
   }
   .chart-embed {
     height: 380px;

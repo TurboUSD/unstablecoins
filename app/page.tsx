@@ -156,13 +156,13 @@ export default async function Home() {
           </p>
           <div className="stats" role="list">
             <span className="stat-chip" role="listitem">
-              Unstablecoins tracked<strong>{rows.length}</strong>
+              Coins tracked<strong>{rows.length}</strong>
             </span>
             <span className="stat-chip" role="listitem">
-              Combined market cap<strong>{formatUsd(mcap)}</strong>
+              Market cap<strong>{formatUsd(mcap)}</strong>
             </span>
             <span className="stat-chip" role="listitem">
-              Combined holders<strong>{formatNumber(holders)}</strong>
+              Holders<strong>{formatNumber(holders)}</strong>
             </span>
           </div>
         </div>
