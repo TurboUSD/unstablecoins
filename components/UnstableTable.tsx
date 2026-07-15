@@ -162,10 +162,7 @@ export default function UnstableTable({
                 <td>
                   <strong>{formatUsd(t.marketCap)}</strong>
                 </td>
-                <td>
-                  {formatNumber(t.supply)}{" "}
-                  <span className="muted">{t.symbol}</span>
-                </td>
+                <td>{formatNumber(t.supply)}</td>
                 <td>{formatDate(t.launchedOn)}</td>
                 <td>{formatNumber(t.holders)}</td>
               </tr>
