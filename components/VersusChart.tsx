@@ -12,7 +12,8 @@ export interface Segment {
 // Official brand colors for well-known stablecoins
 const STABLE_COLOR_MAP: Record<string, string> = {
   USDT: "#26a17b",
-  USDC: "#2775ca",
+  USDC: "#4d9ee9", // lightened from official #2775ca to differ from USDUC blue
+
   DAI: "#f4b731",
   USDS: "#f5ac37",
   USDE: "#48c9a9",

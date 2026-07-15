@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ChartEmbed from "@/components/ChartEmbed";
+import ContractButton from "@/components/ContractButton";
 import { getTokens, getTokenRowById } from "@/lib/market";
 import {
   formatUsd,
@@ -8,7 +9,6 @@ import {
   formatNumber,
   formatDate,
   formatFullDate,
-  daysSince,
 } from "@/lib/format";
 
 export const revalidate = 300;
@@ -114,13 +114,15 @@ export default async function CoinPage({
           )}
         </div>
 
-        <p className="launch-line">
-          ⚡ Launched on <strong>{formatFullDate(t.launchedOn)}</strong> —{" "}
-          {daysSince(t.launchedOn).toLocaleString("en-US")} days embracing
-          volatility on {t.chainLabel}
-        </p>
+        {t.id === "turbousd" && (
+          <p className="launch-line">
+            ⚡ The <strong>first unstablecoin ever deployed</strong> — launched
+            on <strong>{formatFullDate(t.launchedOn)}</strong>
+          </p>
+        )}
 
         <div className="coin-links" style={{ margin: "0 0 22px" }}>
+          <ContractButton address={t.address} chain={t.chain} />
           <a className="pill-link" href={t.website} target="_blank" rel="noopener">
             🌐 Website
           </a>
@@ -173,13 +175,6 @@ export default async function CoinPage({
         <div className="coin-links">
           <a className="pill-link" href="/#rankings">
             📊 Back to Rankings
-          </a>
-        </div>
-
-        <div className="contract-row">
-          {t.address}{" "}
-          <a href={t.explorer} target="_blank" rel="noopener">
-            View on explorer ↗
           </a>
         </div>
 

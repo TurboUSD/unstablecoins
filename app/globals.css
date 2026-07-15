@@ -1225,22 +1225,16 @@ table.coins tbody tr:last-child td {
   border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
 }
 
-.contract-row {
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  color: var(--text-2);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 10px 14px;
-  overflow-wrap: anywhere;
-  margin: 10px 0 24px;
+button.pill-link {
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
-.contract-row a {
-  color: var(--accent);
-  font-weight: 600;
-  font-family: var(--font);
+.contract-pill .mono {
+  font-family: var(--mono);
+  font-size: 0.8rem;
 }
 
 /* ---------- Prose (learn articles) ---------- */
