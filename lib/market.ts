@@ -13,6 +13,7 @@ export interface TokenStatic {
   explorer: string;
   twitter?: string;
   telegram?: string;
+  dexLabel?: string;
   logo: string;
   color: string;
   launchedOn: string; // ISO date

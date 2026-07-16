@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import ChartEmbed from "@/components/ChartEmbed";
 import ContractButton from "@/components/ContractButton";
 import { getTokens, getTokenRowById } from "@/lib/market";
+import { comparePairSlug } from "@/lib/compare";
 import {
   formatUsd,
   formatPrice,
@@ -51,7 +52,37 @@ export default async function CoinPage({
   const t = await getTokenRowById(coin);
   if (!t) notFound();
 
+  const others = getTokens().filter((x) => x.id !== t.id);
+
+  const faq = [
+    {
+      q: `What is ${t.name} (${t.symbol})?`,
+      a: t.description[0],
+    },
+    {
+      q: `Where can I buy ${t.symbol}?`,
+      a: `${t.symbol} trades on ${t.dexLabel} on ${t.chainLabel}. Always verify the contract address before swapping — you can copy it from the button at the top of this page or check it on the block explorer.`,
+    },
+    {
+      q: `What is ${t.symbol}'s contract address?`,
+      a: `The official ${t.name} contract address on ${t.chainLabel} is ${t.address}.`,
+    },
+    {
+      q: `Is ${t.name} a stablecoin?`,
+      a: `No — quite the opposite. ${t.symbol} is an unstablecoin: it has no peg, no backing and no price target. Its value floats freely with the market, with volatility included by design.`,
+    },
+  ];
+
   const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faq.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    },
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
@@ -195,6 +226,30 @@ export default async function CoinPage({
               </a>
               .
             </p>
+
+            <h2>{t.symbol} FAQ</h2>
+          </div>
+          <div className="faq-list" style={{ marginTop: 14 }}>
+            {faq.map((f) => (
+              <details className="faq-item" key={f.q}>
+                <summary>{f.q}</summary>
+                <div className="answer">
+                  <p style={{ overflowWrap: "anywhere" }}>{f.a}</p>
+                </div>
+              </details>
+            ))}
+          </div>
+
+          <div className="coin-links" style={{ marginTop: 28 }}>
+            {others.map((o) => (
+              <a
+                key={o.id}
+                className="pill-link"
+                href={`/compare/${comparePairSlug(t.id, o.id)}`}
+              >
+                ⚖️ {t.symbol} vs {o.symbol}
+              </a>
+            ))}
           </div>
         </section>
       </div>

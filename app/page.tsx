@@ -99,6 +99,19 @@ export default async function Home() {
   const jsonLd = [
     {
       "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "Unstablecoins",
+      url: SITE_URL,
+      logo: `${SITE_URL}/icon.svg`,
+      sameAs: ["https://x.com/turbousd", "https://turbousd.com"],
+      parentOrganization: {
+        "@type": "Organization",
+        name: "TurboUSD",
+        url: "https://turbousd.com",
+      },
+    },
+    {
+      "@context": "https://schema.org",
       "@type": "WebSite",
       name: "Unstablecoins",
       alternateName: "The Unstablecoin Screener",

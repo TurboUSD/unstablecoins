@@ -1,0 +1,25 @@
+# Unstablecoins — The Unstablecoin Screener
+
+> unstablecoins.org tracks every unstablecoin: crypto assets that are the deliberate opposite of stablecoins — no peg, no backing, no price target, volatility by design. The site provides live prices, market caps, supply, holder counts and rankings, refreshed every ~5 minutes from DexScreener, Blockscout and Solscan. It is a project by TurboUSD (https://turbousd.com).
+
+An unstablecoin is a cryptocurrency that deliberately embraces volatility. Where stablecoins like USDT or USDC are engineered to always be worth $1, unstablecoins have no peg at all and openly celebrate free-floating value. Most are satirical or cultural tokens; the category emerged in October 2024 with TurboUSD and went mainstream on Solana in 2025.
+
+## Tracked unstablecoins
+
+- [Unstable Coin (USDUC)](https://unstablecoins.org/usduc): satirical anti-stablecoin on Solana, the largest unstablecoin by market cap. Contract: CB9dDufT3ZuQXqqSfa1c5kY935TEreyBw9XJXxHKpump
+- [TurboUSD Unstablecoin (₸USD)](https://unstablecoins.org/turbousd): the first unstablecoin ever deployed (October 17, 2024, Base). Fixed 100B supply, staking, AI-managed treasury, real-world brand. Contract: 0x3d5e487B21E0569048c4D1A60E98C36e1B09DB07
+- [Unstable Tether (USDUT)](https://unstablecoins.org/usdut): Solana parody of Tether without the peg. Contract: 3vz82EWYv8xnc7Cm7qSgERcpMeqw92PcX8PBz88npump
+- [Unstable States Dollar (USD)](https://unstablecoins.org/unstable-states-dollar): Solana parody of the US dollar itself. Contract: 7WXaHLjatDZBAZ7hyRiFpYpGpPbcKiyHf6HaxUzSbonk
+
+## Guides
+
+- [What Is an Unstablecoin?](https://unstablecoins.org/learn/what-is-an-unstablecoin): definition, how they work, why they exist
+- [Stablecoin vs Unstablecoin](https://unstablecoins.org/learn/stablecoin-vs-unstablecoin): side-by-side comparison of the two designs
+- [The History of Unstablecoins](https://unstablecoins.org/learn/history-of-unstablecoins): from TurboUSD (Oct 2024) to the Solana wave (2025)
+
+## Other
+
+- [Live rankings](https://unstablecoins.org/#rankings): all unstablecoins by market cap
+- [Submit a coin](https://unstablecoins.org/submit): listing criteria
+- Data sources: DexScreener (prices), Blockscout and Solscan (holders), DefiLlama (stablecoin comparison)
+- Nothing on the site is financial advice; unstablecoins are high-risk satirical assets that can go to zero.

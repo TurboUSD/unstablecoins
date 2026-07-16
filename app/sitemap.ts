@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import tokens from "@/data/tokens.json";
+import { comparePairs } from "@/lib/compare";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://unstablecoins.org";
@@ -18,6 +19,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "hourly" as const,
       priority: 0.9,
+    })),
+    ...comparePairs().map((p) => ({
+      url: `${SITE_URL}/compare/${p.slug}`,
+      lastModified: now,
+      changeFrequency: "daily" as const,
+      priority: 0.6,
     })),
     {
       url: `${SITE_URL}/learn`,
